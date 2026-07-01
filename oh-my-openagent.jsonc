@@ -1,0 +1,348 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "auto_update": false,
+  "experimental": {},
+  "hashline_edit": true,
+  "git_master": {
+    "git_env_prefix": "GIT_MASTER=1",
+    "commit_footer": true,
+    "include_co_authored_by": true
+  },
+  "codegraph": {
+    "enabled": true,
+    "auto_init": false,
+    "auto_provision": false,
+    "telemetry": false
+  },
+  "team_mode": {
+    "enabled": true,
+    "max_parallel_members": 4,
+    "max_members": 8,
+    "tmux_visualization": true,
+    "max_member_turns": 1000,
+    "max_messages_per_run": 20000,
+    "max_wall_clock_minutes": 240,
+    "message_payload_max_bytes": 65536,
+    "recipient_unread_max_bytes": 262144,
+    "mailbox_poll_interval_ms": 3000
+  },
+  "tmux": {
+    "enabled": true,
+    "layout": "main-vertical",
+    "isolation": "inline",
+    "main_pane_size": 60,
+    "main_pane_min_width": 120,
+    "agent_pane_min_width": 40
+  },
+  "model_fallback": true,
+  "runtime_fallback": {
+    "enabled": true,
+    "max_fallback_attempts": 6,
+    "cooldown_seconds": 120,
+    "restore_primary_after_cooldown": true
+  },
+  "agents": {
+    // ── Sisyphus · 主编排器 ──────────────────────────────────────────────
+    // 角色: 用户交互入口，意图识别，任务分解，委托调度
+    // 频率: 极高 (每次交互)  并发: 1
+    // thinking=ON: 编排需要深度推理(意图解析、任务分解、上下文理解)
+    "sisyphus": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Hephaestus · 深度自主执行 ──────────────────────────────────────
+    // 角色: 8h+自主研究+实现，复杂问题端到端解决
+    // 频率: 低  并发: 1
+    // thinking=ON: 长时自主任务需要持续深度推理
+    // allow_non_gpt_model: 必须开启，否则非GPT模型会被拒绝
+    "hephaestus": {
+      "allow_non_gpt_model": true,
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Prometheus · 战略规划 ──────────────────────────────────────────
+    // 角色: 访谈模式规划器，需求澄清，结构化任务分解，生成并行执行计划
+    // 频率: 低  并发: 1
+    // thinking=ON: 规划需要考虑依赖关系和并行机会
+    "prometheus": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Oracle · 高IQ顾问 ──────────────────────────────────────────────
+    // 角色: 只读深度推理，架构设计，复杂调试，安全/性能分析
+    // 频率: 中 (在困难问题时或ulw模式进行任务验收)  并发: 1
+    // thinking=ON: 深度推理任务
+    "oracle": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Librarian · 外部参考搜索 ────────────────────────────────────────
+    // 角色: 外部文档/开源代码/API文档检索 (Reference Grep)
+    // 频率: 中高 (常2-3并行)  并发: 2-3
+    // thinking=OFF: 搜索检索类，速度优先
+    "librarian": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5-turbo",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    },
+    // ── Explore · 上下文搜索 ────────────────────────────────────────────
+    // 角色: 代码库内搜索，模式发现，结构分析 (Contextual Grep)
+    // 频率: 高  并发: 3-5
+    // thinking=OFF: grep类任务，速度优先，不需要长链推理
+    "explore": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5-turbo",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    },
+    // ── Multimodal-Looker · 多媒体分析 ─────────────────────────────────
+    // 角色: 分析PDF/图片/图表，提取信息/摘要
+    // 频率: 低  并发: 1
+    // thinking=ON: 内容提取/摘要/理解
+    "multimodal-looker": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-4.6v"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Metis · 规划前置分析 ───────────────────────────────────────────
+    // 角色: 识别隐藏意图、歧义、AI失败点 (Pre-planning Consultant)
+    // 频率: 低中  并发: 1
+    // thinking=ON: 需要识别隐含需求和潜在陷阱
+    "metis": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Momus · 计划评审 ───────────────────────────────────────────────
+    // 角色: 评估工作计划的清晰性、可验证性、完整性 (Plan Critic)
+    // 频率: 低中  并发: 1
+    // thinking=ON: 评审需要深度审视每个维度
+    // 选择另外两个制定计划的agent不同的主模型，避免计划评审时发现不了该模型固有的能力缺陷或偏见
+    "momus": {
+      "model": "deepseek/deepseek-v4-pro",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5.2",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── Atlas · 任务指挥与执行 ─────────────────────────────────────────
+    // 角色: 读取计划，委派子任务给专门Agent，逐个验证结果
+    // 频率: 中  并发: 1
+    // thinking=OFF: 执行类任务，不需要深度思考
+    "atlas": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5-turbo",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    },
+    // ── Sisyphus-Junior · 轻量级工作者 ─────────────────────────────────
+    // 角色: 以更低成本处理委派的子任务，通过category路由获得领域配置
+    // 频率: 高 (所有category任务)  并发: 1/category任务
+    // thinking=OFF: 工作者任务，速度优先
+    // 注: category任务时模型由对应category配置覆盖，此处为无category时的默认
+    "sisyphus-junior": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5-turbo",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    }
+  },
+  "categories": {
+    // ── visual-engineering · 前端UI/UX ─────────────────────────────────
+    // 角色: 前端、UI/UX、样式、动画、布局
+    // 频率: 中  并发: 1
+    // thinking=ON: 设计决策需要考虑布局、交互、美学
+    "visual-engineering": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "kimi-for-coding/k2p7",
+        "deepseek/deepseek-v4-pro"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── ultrabrain · 硬核逻辑 ─────────────────────────────────────────
+    // 角色: 真正困难的逻辑密集型任务，架构决策，算法
+    // 频率: 低  并发: 1
+    // thinking=ON: 硬核逻辑问题必须深度思考
+    "ultrabrain": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── deep · 深度自主 ───────────────────────────────────────────────
+    // 角色: 目标导向的自主问题解决，需深入理解的复杂任务
+    // 频率: 低  并发: 1
+    // thinking=ON: 自主问题解决需要持续深度推理
+    "deep": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── artistry · 创意求解 ────────────────────────────────────────────
+    // 角色: 超越标准模式的创意性问题解决
+    // 频率: 低中  并发: 1
+    // thinking=ON: 创造性推理
+    "artistry": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5.2",
+        "deepseek/deepseek-v4-pro"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── quick · 快速小任务 ─────────────────────────────────────────────
+    // 角色: 单文件改动、typo修复、简单修改
+    // 频率: 高  并发: 1
+    // thinking=OFF: 简单任务不需要thinking
+    "quick": {
+      "model": "zhipuai-coding-plan/glm-5-turbo",
+      "fallback_models": [
+        "kimi-for-coding/k2p7",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    },
+    // ── unspecified-low · 低复杂度通用 ─────────────────────────────────
+    // 角色: 不属于其他category的低复杂度任务
+    // 频率: 中  并发: 1
+    // thinking=OFF: 低复杂度不需要thinking
+    "unspecified-low": {
+      "model": "kimi-for-coding/k2p7",
+      "fallback_models": [
+        "zhipuai-coding-plan/glm-5-turbo",
+        "deepseek/deepseek-v4-flash"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    },
+    // ── unspecified-high · 高复杂度通用 ────────────────────────────────
+    // 角色: 不属于其他category的高复杂度任务
+    // 频率: 中  并发: 1
+    // thinking=ON: 高复杂度任务需要深度推理
+    "unspecified-high": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "variant": "max",
+      "reasoningEffort": "max"
+    },
+    // ── writing · 文档写作 ─────────────────────────────────────────────
+    // 角色: 文档、技术写作、长文本输出
+    // 频率: 低中  并发: 1
+    // thinking=OFF: 写作是生成任务，不是推理任务
+    "writing": {
+      "model": "zhipuai-coding-plan/glm-5.2",
+      "fallback_models": [
+        "deepseek/deepseek-v4-pro",
+        "kimi-for-coding/k2p7"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "reasoningEffort": "none"
+    }
+  }
+}

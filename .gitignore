@@ -1,0 +1,13 @@
+node_modules/
+
+package.json
+package-lock.json
+
+bun.lock
+
+# secret files
+.env
+.secrets/
+
+# oh-my-openagent
+.omo/
