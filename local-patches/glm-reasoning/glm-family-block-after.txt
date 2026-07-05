@@ -1,0 +1,15 @@
+=== Patched GLM family block (HEURISTIC_MODEL_FAMILY_REGISTRY) ===
+File: dist/index.js
+Location: L21421-L21430 (after patch)
+
+L21421:   {
+L21422:     family: "glm",
+L21423:     includes: ["glm"],
+L21424:     variants: ["low", "medium", "high", "max"],
+L21425:     reasoningEfforts: ["high", "max"],
+L21426:     reasoningEffortAliases: {
+L21427:       low: "high",
+L21428:       medium: "high",
+L21429:       xhigh: "max",
+L21430:     },
+L21431:   },

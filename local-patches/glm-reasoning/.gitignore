@@ -1,0 +1,2 @@
+# patch 脚本自动生成的 dist/index.js 备份（含版本号，本地产物）
+*.original
