@@ -16,7 +16,7 @@
       }
     }
   },
-  "model": "zhipuai-coding-plan/glm-5.1",
+  "model": "zhipuai-coding-plan/glm-5.2",
   "small_model": "kimi-for-coding/k2p7",
   "mcp": {
     "zai-mcp-server": {

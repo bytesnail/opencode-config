@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "auto_update": false,
+  "telemetry": false,
   "experimental": {},
   "hashline_edit": true,
   "git_master": {
@@ -148,7 +149,8 @@
         "zhipuai-coding-plan/glm-4.6v"
       ],
       "thinking": {
-        "type": "enabled"
+        "type": "enabled",
+        "budgetTokens": 16384
       },
       "variant": "max",
       "reasoningEffort": "max"
@@ -278,7 +280,8 @@
         "deepseek/deepseek-v4-pro"
       ],
       "thinking": {
-        "type": "enabled"
+        "type": "enabled",
+        "budgetTokens": 16384
       },
       "variant": "max",
       "reasoningEffort": "max"
