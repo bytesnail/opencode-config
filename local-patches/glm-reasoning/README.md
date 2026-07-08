@@ -201,8 +201,9 @@ bun run verify-patch.js
 
 ## 7. 适用版本
 
-- 创建时 oh-my-openagent 版本: 4.15.1
-- patch 日期: 2026-07-05
+- 创建时 oh-my-openagent 版本: 4.15.1 (2026-07-05)
+- 已验证适用版本: 4.15.1, 4.16.0
+- 最近复核: 2026-07-09 — 4.16.0 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21462-21465）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField`（L112-113）未变
 - 脚本自动适配当前版本（从 opencode.jsonc 提取），无需手动修改版本号
-- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`），不同版本的备份互不覆盖
-- PR #5672 合入后本 patch 可移除
+- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`），不同版本的备份互不覆盖
+- PR #5672 截至 2026-07-09 仍未合入；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）

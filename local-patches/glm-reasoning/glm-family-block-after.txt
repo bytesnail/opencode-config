@@ -1,7 +1,24 @@
 === Patched GLM family block (HEURISTIC_MODEL_FAMILY_REGISTRY) ===
-File: dist/index.js
-Location: L21421-L21430 (after patch)
+File: dist/index.js (oh-my-openagent, AFTER PATCH)
+Location (4.15.1): GLM object L21421-L21431 (block grows +6 lines vs unpatched)
+Location (4.16.0): GLM object L21461-L21471 (block grows +6 lines vs unpatched)
+Patch delta: variants gains "max"; adds reasoningEfforts + reasoningEffortAliases
+             (mirrors the existing DeepSeek family definition).
 
+--- 4.16.0 patched (current) ---
+L21461:   {
+L21462:     family: "glm",
+L21463:     includes: ["glm"],
+L21464:     variants: ["low", "medium", "high", "max"],
+L21465:     reasoningEfforts: ["high", "max"],
+L21466:     reasoningEffortAliases: {
+L21467:       low: "high",
+L21468:       medium: "high",
+L21469:       xhigh: "max",
+L21470:     },
+L21471:   },
+
+--- 4.15.1 patched (original snapshot, kept for history) ---
 L21421:   {
 L21422:     family: "glm",
 L21423:     includes: ["glm"],

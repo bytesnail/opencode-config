@@ -1,7 +1,27 @@
 === Original GLM family block (HEURISTIC_MODEL_FAMILY_REGISTRY) ===
-File: dist/index.js
-Location: L21421-L21425
+File: dist/index.js (oh-my-openagent, UNPATCHED)
+Location (4.15.1): GLM object L21421-L21425, surrounding context L21420-L21431
+Location (4.16.0): GLM object L21461-L21465, surrounding context L21460-L21471
+Note: block content is byte-identical across both versions; only line numbers
+      shifted (+40) because of upstream additions before this block.
+      The patch script matches by CONTENT, not line number, so the shift is
+      informational only.
 
+--- 4.16.0 context (current, UNPATCHED) ---
+L21460:   },
+L21461:   {
+L21462:     family: "glm",
+L21463:     includes: ["glm"],
+L21464:     variants: ["low", "medium", "high"]
+L21465:   },
+L21466:   {
+L21467:     family: "minimax",
+L21468:     includes: ["minimax"],
+L21469:     variants: ["low", "medium", "high"],
+L21470:     supportsThinking: false
+L21471:   },
+
+--- 4.15.1 context (original snapshot, kept for history) ---
 L21420:   },
 L21421:   {
 L21422:     family: "glm",
