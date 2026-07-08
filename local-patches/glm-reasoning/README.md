@@ -79,7 +79,7 @@ oh-my-openagent 的 `model-capability-heuristics.ts` 中，GLM 模型族（`fami
 - oh-my-openagent PR #5672：https://github.com/code-yeongyu/oh-my-openagent/pull/5672 — 与本 patch 完全相同的修改，CI 全绿，待 review
 - oh-my-openagent Issue #5300：https://github.com/code-yeongyu/oh-my-openagent/issues/5300 — 最初报告此问题
 - DeepSeek 族定义（model-capability-heuristics.ts L86-96）：本 patch 的参照模板
-- 审计报告：/mnt/hdd/projects/learn_opencode/opencode-config-audit-report-final.md §5.5
+- 审计报告：../../opencode-config-audit-report-final.md §5.5（仓库根目录）
 
 ## 3. 文件清单
 
