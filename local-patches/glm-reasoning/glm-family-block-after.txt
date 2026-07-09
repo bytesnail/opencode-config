@@ -2,10 +2,24 @@
 File: dist/index.js (oh-my-openagent, AFTER PATCH)
 Location (4.15.1): GLM object L21421-L21431 (block grows +6 lines vs unpatched)
 Location (4.16.0): GLM object L21461-L21471 (block grows +6 lines vs unpatched)
+Location (4.16.1): GLM object L21467-L21477 (block grows +6 lines vs unpatched)
 Patch delta: variants gains "max"; adds reasoningEfforts + reasoningEffortAliases
              (mirrors the existing DeepSeek family definition).
 
---- 4.16.0 patched (current) ---
+--- 4.16.1 patched (current) ---
+L21467:   {
+L21468:     family: "glm",
+L21469:     includes: ["glm"],
+L21470:     variants: ["low", "medium", "high", "max"],
+L21471:     reasoningEfforts: ["high", "max"],
+L21472:     reasoningEffortAliases: {
+L21473:       low: "high",
+L21474:       medium: "high",
+L21475:       xhigh: "max",
+L21476:     },
+L21477:   },
+
+--- 4.16.0 patched (kept for history) ---
 L21461:   {
 L21462:     family: "glm",
 L21463:     includes: ["glm"],

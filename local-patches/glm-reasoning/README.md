@@ -132,6 +132,7 @@ grep -A5 'family: "glm",$' ~/.cache/opencode/packages/oh-my-openagent@*/node_mod
 
 如果输出包含 `reasoningEfforts` → 官方已修复（PR #5672 合入），删除本 patch 目录即可。
 如果输出只有 `variants: ["low", "medium", "high"]` → 仍需 patch。
+> 注：dist `index.js` 中约 90 处含 `family: "glm"`（1 处 4 空格缩进的注册表条目 + ~89 处 6 空格缩进的模型目录元数据，二者后续行完全不同）。patch 脚本以精确 4 行块（`family` + `includes` + `variants` + `},`）匹配，只命中注册表那 1 处，不受目录条目干扰；python `content.count()` 守卫要求恰好等于 1，否则报错退出。
 
 ## 5. 重新 patch 操作
 
@@ -202,8 +203,8 @@ bun run verify-patch.js
 ## 7. 适用版本
 
 - 创建时 oh-my-openagent 版本: 4.15.1 (2026-07-05)
-- 已验证适用版本: 4.15.1, 4.16.0
-- 最近复核: 2026-07-09 — 4.16.0 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21462-21465）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField`（L112-113）未变
+- 已验证适用版本: 4.15.1, 4.16.0, 4.16.1
+- 最近复核: 2026-07-09 — 4.16.1 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21468-21471，比 4.16.0 后移 6 行）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField`（L112-113）未变
 - 脚本自动适配当前版本（从 opencode.jsonc 提取），无需手动修改版本号
-- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`），不同版本的备份互不覆盖
+- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`、`index.js.opencode-cache.4.16.1.original`），不同版本的备份互不覆盖
 - PR #5672 截至 2026-07-09 仍未合入；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）
