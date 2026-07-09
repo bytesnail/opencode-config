@@ -42,9 +42,10 @@ echo "Detected oh-my-openagent version: $OMO_VERSION"
 # 根据版本号定位 dist/index.js
 OPENCODE_DIST="$HOME/.cache/opencode/packages/oh-my-openagent@${OMO_VERSION}/node_modules/oh-my-openagent/dist/index.js"
 
-# bun cache 中的路径格式: oh-my-openagent@<ver>@@<registry>@@@<n>
-# 用 glob 匹配
-BUN_DIST=$(ls -1 /mnt/hdd/cache/bun/oh-my-openagent@${OMO_VERSION}@@*/dist/index.js 2>/dev/null | head -1 || true)
+# bun cache 目录：优先环境变量 BUN_INSTALL_CACHE_DIR，回退默认 ~/.bun/install/cache
+BUN_CACHE_DIR="${BUN_INSTALL_CACHE_DIR:-$HOME/.bun/install/cache}"
+# bun cache 中的路径格式: oh-my-openagent@<ver>@@<registry>@@@<n>，用 glob 匹配
+BUN_DIST=$(ls -1 "$BUN_CACHE_DIR"/oh-my-openagent@${OMO_VERSION}@@*/dist/index.js 2>/dev/null | head -1 || true)
 
 # patch 前的原始代码（唯一匹配）
 OLD_CODE='    family: "glm",

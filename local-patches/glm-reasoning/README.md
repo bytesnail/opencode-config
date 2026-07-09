@@ -100,7 +100,7 @@ oh-my-openagent 的 `model-capability-heuristics.ts` 中，GLM 模型族（`fami
 | 路径模板 | 说明 |
 |---|---|
 | `~/.cache/opencode/packages/oh-my-openagent@<版本>/node_modules/oh-my-openagent/dist/index.js` | opencode 运行时加载的副本（主要） |
-| `/mnt/hdd/cache/bun/oh-my-openagent@<版本>@@*/dist/index.js` | bun 全局缓存中的副本 |
+| `$BUN_INSTALL_CACHE_DIR/oh-my-openagent@<版本>@@*/dist/index.js`（默认 `~/.bun/install/cache/`） | bun 全局缓存中的副本 |
 
 每个版本的备份文件独立存放（文件名含版本号，互不覆盖）：
 - `index.js.opencode-cache.<版本>.original` — 对应版本的 opencode 缓存副本备份
