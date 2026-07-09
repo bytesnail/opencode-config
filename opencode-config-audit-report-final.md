@@ -2,7 +2,7 @@
 
 > 检视范围：`~/.config/opencode/` 目录下的 3 个 JSON 配置文件
 > 检视日期：2026-07-05
-> 参考源码：opencode (`/mnt/hdd/projects/opencode/`)、oh-my-openagent (`/mnt/hdd/projects/oh-my-openagent/`)
+> 参考源码：[opencode](https://github.com/sst/opencode)、[oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)
 > 验证方法：源码逐行追踪 + bun 运行时兼容层测试 + opencode 命令实际执行
 > 插件版本：oh-my-openagent@4.15.1
 
