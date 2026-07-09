@@ -99,7 +99,7 @@ oh-my-openagent 的 `model-capability-heuristics.ts` 中，GLM 模型族（`fami
 
 | 路径模板 | 说明 |
 |---|---|
-| `~/.cache/opencode/packages/oh-my-openagent@<版本>/node_modules/oh-my-openagent/dist/index.js` | opencode 运行时加载的副本（主要） |
+| `~/.cache/opencode/packages/oh-my-openagent@<版本>/node_modules/oh-my-openagent/dist/index.js` | opencode 运行时加载的副本（主要，4 空格缩进） |
 | `$BUN_INSTALL_CACHE_DIR/oh-my-openagent@<版本>@@*/dist/index.js`（默认 `~/.bun/install/cache/`） | bun 全局缓存中的副本 |
 
 每个版本的备份文件独立存放（文件名含版本号，互不覆盖）：
@@ -107,6 +107,17 @@ oh-my-openagent 的 `model-capability-heuristics.ts` 中，GLM 模型族（`fami
 - `index.js.bun-cache.<版本>.original` — 对应版本的 bun 缓存副本备份
 
 > 版本号升级后，脚本会自动定位新版本的文件路径。首次 patch 新版本时会自动创建新备份。
+
+> **⚠️ 不要扩展 patch 范围到其他 dist 文件**
+>
+> oh-my-openagent 的 `dist/` 目录中有多个 JS 文件包含相同的 `HEURISTIC_MODEL_FAMILY_REGISTRY`（如 `dist/cli/index.js`、`dist/cli-node/index.js`、`dist/tui.js`），但**只需 patch `dist/index.js`**。原因如下：
+>
+> - **`dist/index.js`（server 插件）**：opencode 运行时通过 `exports["./server"]` 定位此文件并 `await import()` 动态加载。它包含 `chat.params` hook 和 `resolveCompatibleModelSettings()`——正是 strip `reasoningEffort` 的代码路径。**这是唯一需要 patch 的文件。**
+> - **`dist/tui.js`（TUI 插件）**：opencode 也会通过 `exports["./tui"]` 动态加载此文件，但它**不包含 `resolveCompatibleModelSettings()` 和 `chat.params` hook**（均为 0 处）——GLM 注册表副本是打包产物，在 TUI 渲染路径中永远不会被执行。
+> - **`dist/cli/`、`dist/cli-node/`（standalone CLI）**：standalone `omo` CLI 运行时使用编译后的平台二进制（如 `oh-my-opencode-linux-x64-gnu`），不读取这些 JS 源文件。
+> - 源码修复（PR #5672）合入后重建，所有 dist 文件会自动从源码重新生成——patch 只需覆盖重建前的过渡期。
+>
+> 参见 PR #5672（https://github.com/code-yeongyu/oh-my-openagent/pull/5672）也只修改源码 `model-capability-heuristics.ts` 一处。
 
 ## 4. oh-my-openagent 更新后如何判断是否需要重新 patch
 
@@ -152,7 +163,7 @@ bun run verify-patch.js
 
 脚本会自动处理：
 - 从 opencode.jsonc 提取新版本号（如 `4.16.0`）
-- 定位 `~/.cache/opencode/packages/oh-my-openagent@4.16.0/...` 和 bun 缓存
+- 定位 `~/.cache/opencode/packages/oh-my-openagent@<版本>/...` 和 bun 缓存
 - 首次 patch 新版本时自动创建备份
 - 如果官方已修复（GLM 族已有 reasoningEfforts），自动跳过并提示
 
@@ -204,7 +215,7 @@ bun run verify-patch.js
 
 - 创建时 oh-my-openagent 版本: 4.15.1 (2026-07-05)
 - 已验证适用版本: 4.15.1, 4.16.0, 4.16.1
-- 最近复核: 2026-07-09 — 4.16.1 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21468-21471，比 4.16.0 后移 6 行）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField`（L112-113）未变
+- 最近复核: 2026-07-10 — 4.16.1 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21468-21471）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField`（L112-113）未变。dist 于 2026-07-10 01:09 被重新安装（patch 被覆盖），已重新应用并验证（11/11 ✓）
 - 脚本自动适配当前版本（从 opencode.jsonc 提取），无需手动修改版本号
 - 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`、`index.js.opencode-cache.4.16.1.original`），不同版本的备份互不覆盖
-- PR #5672 截至 2026-07-09 仍未合入；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）
+- PR #5672 截至 2026-07-10 仍未合入（源码 L75-79 仍缺字段）；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）
