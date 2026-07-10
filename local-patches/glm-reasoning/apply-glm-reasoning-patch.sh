@@ -23,7 +23,7 @@ extract_omo_version() {
   fi
   # 提取 oh-my-openagent@<version> 中的版本号
   local ver
-  ver=$(grep -o 'oh-my-openagent@[0-9][0-9.]*' "$config_file" | head -1 | cut -d@ -f2)
+  ver=$(grep -oP 'oh-my-openagent@\K(latest|[0-9.]+)' "$config_file")
   if [ -z "$ver" ]; then
     echo "ERROR"
     return 1
@@ -31,7 +31,31 @@ extract_omo_version() {
   echo "$ver"
 }
 
+
+# 从package.json 自动提取当前 oh-my-openagent 版本号
+extract_omo_real_version() {
+  local package_file=$HOME/.cache/opencode/packages/oh-my-openagent\@latest/package.json
+  if [ ! -f "$package_file" ]; then
+    echo "ERROR"
+    return 1
+  fi
+  # 提取 oh-my-openagent@latest/package.json 中的版本号
+  local ver
+  ver=$(grep -oP '"oh-my-openagent":\s*"\^?\K[0-9.]+' "$package_file")
+  if [ -z "$ver" ]; then
+    echo "ERROR"
+    return 1
+  fi
+  echo "$ver"
+}
+
+
 OMO_VERSION=$(extract_omo_version || true)
+if [ "$OMO_VERSION" = "latest" ]; then
+  OMO_REAL_VERSION=$(extract_omo_real_version || true)
+  else
+  OMO_REAL_VERSION=OMO_VERSION
+fi
 if [ "$OMO_VERSION" = "ERROR" ] || [ -z "$OMO_VERSION" ]; then
   echo "ERROR: 无法从 opencode.jsonc 提取 oh-my-openagent 版本号"
   exit 1
@@ -45,7 +69,7 @@ OPENCODE_DIST="$HOME/.cache/opencode/packages/oh-my-openagent@${OMO_VERSION}/nod
 # bun cache 目录：优先环境变量 BUN_INSTALL_CACHE_DIR，回退默认 ~/.bun/install/cache
 BUN_CACHE_DIR="${BUN_INSTALL_CACHE_DIR:-$HOME/.bun/install/cache}"
 # bun cache 中的路径格式: oh-my-openagent@<ver>@@<registry>@@@<n>，用 glob 匹配
-BUN_DIST=$(ls -1 "$BUN_CACHE_DIR"/oh-my-openagent@${OMO_VERSION}@@*/dist/index.js 2>/dev/null | head -1 || true)
+BUN_DIST=$(ls -1 "$BUN_CACHE_DIR"/oh-my-openagent@${OMO_REAL_VERSION}@@*/dist/index.js 2>/dev/null | head -1 || true)
 
 # patch 前的原始代码（唯一匹配）
 OLD_CODE='    family: "glm",
@@ -106,7 +130,7 @@ patch_file() {
   fi
 
   # 备份原始文件（文件名含版本号，避免版本升级后混淆）
-  local backup="$SCRIPT_DIR/index.js.${label}.${OMO_VERSION}.original"
+  local backup="$SCRIPT_DIR/index.js.${label}.${OMO_REAL_VERSION}.original"
   if [ ! -f "$backup" ]; then
     cp "$file" "$backup"
     echo "  [$label] Backup saved: $(basename "$backup")"
@@ -133,7 +157,7 @@ print(f'  [$label] PATCHED')
 revert_file() {
   local file="$1"
   local label="$2"
-  local backup="$SCRIPT_DIR/index.js.${label}.${OMO_VERSION}.original"
+  local backup="$SCRIPT_DIR/index.js.${label}.${OMO_REAL_VERSION}.original"
 
   if [ ! -f "$backup" ]; then
     echo "  [$label] ERROR: backup not found ($backup)"
