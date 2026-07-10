@@ -5,7 +5,7 @@ import { homedir } from "os"
 function extractVersion() {
   const configPath = `${homedir()}/.config/opencode/opencode.jsonc`
   const config = readFileSync(configPath, "utf8")
-  const match = config.match(/oh-my-openagent@(\d+\.\d+\.\d+)/)
+  const match = config.match(/oh-my-openagent@(latest|\d+\.\d+\.\d+)/)
   if (!match) throw new Error("Could not extract oh-my-openagent version from opencode.jsonc")
   return match[1]
 }
