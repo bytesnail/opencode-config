@@ -3,12 +3,27 @@ File: dist/index.js (oh-my-openagent, UNPATCHED)
 Location (4.15.1): GLM object L21421-L21425, surrounding context L21420-L21431
 Location (4.16.0): GLM object L21461-L21465, surrounding context L21460-L21471
 Location (4.16.1): GLM object L21467-L21471, surrounding context L21466-L21477
+Location (4.16.3): GLM object L21487-L21491, surrounding context L21486-L21497
 Note: block content is byte-identical across all versions; only line numbers
-      shifted (4.15.1→4.16.0: +40; 4.16.0→4.16.1: +6) due to upstream
+      shifted (4.15.1→4.16.0: +40; 4.16.0→4.16.1: +6; 4.16.1→4.16.3: +20) due to upstream
       additions before this block. The patch script matches by CONTENT, not
       line number, so the shift is informational only.
 
---- 4.16.1 context (current, UNPATCHED) ---
+--- 4.16.3 context (current, UNPATCHED) ---
+L21486:   },
+L21487:   {
+L21488:     family: "glm",
+L21489:     includes: ["glm"],
+L21490:     variants: ["low", "medium", "high"]
+L21491:   },
+L21492:   {
+L21493:     family: "minimax",
+L21494:     includes: ["minimax"],
+L21495:     variants: ["low", "medium", "high"],
+L21496:     supportsThinking: false
+L21497:   },
+
+--- 4.16.1 context (kept for history) ---
 L21466:   },
 L21467:   {
 L21468:     family: "glm",
