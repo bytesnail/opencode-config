@@ -214,8 +214,8 @@ bun run verify-patch.js
 ## 7. 适用版本
 
 - 创建时 oh-my-openagent 版本: 4.15.1 (2026-07-05)
-- 已验证适用版本: 4.15.1, 4.16.0, 4.16.1, 4.16.3
-- 最近复核: 2026-07-11 — 4.16.3 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`；dist `index.js` OLD_CODE 唯一匹配（L21488-21491）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField` 的 `if (familyKnown)→undefined` 分支（源码 `model-settings-compatibility.ts` L112-113；dist 中 unpatched L21579-21581 / patched L21585-21587）未变。dist 于 2026-07-11 03:31 被重新安装（patch 被覆盖），已重新应用并验证（11/11 ✓）。注：4.16.3 仅存在于 opencode 缓存，bun 缓存无对应版本（脚本自动 SKIP bun-cache，不影响运行时——opencode 仅加载 opencode-cache 副本）；tui.js 有独立的未 patch GLM 注册表副本（L21206-21209），仅用于诊断显示，不影响请求参数
+- 已验证适用版本: 4.15.1, 4.16.0, 4.16.1, 4.16.3, 4.17.1
+- 最近复核: 2026-07-13 — 4.17.1 源码 `model-capability-heuristics.ts` GLM 族（L75-79）仍缺 `reasoningEfforts`/`max`/`aliases`（PR #5672 仍未合入，git log 仅见 release/v4.17.1-source-state merge）；dist `index.js` OLD_CODE 唯一匹配（unpatched L21499-21501）；opencode `transform.ts`（L698-703）仍为 GLM-5.2 发出 `reasoningEffort:"max"`；strip 根因 `resolveField` 的 `if (familyKnown)→undefined` 分支（源码 `model-settings-compatibility.ts` L112-113；dist 中 unpatched L21590-21592 / patched L21596-21598）未变。dist 于 2026-07-13 22:30 被重新安装（patch 被覆盖），已重新应用并验证（11/11 ✓）。注：4.17.1 仅存在于 opencode 缓存，bun 缓存无对应版本（脚本自动 SKIP bun-cache，不影响运行时——opencode 仅加载 opencode-cache 副本）；tui.js 有独立的未 patch GLM 注册表副本（L21215-21219），仅用于诊断显示，不影响请求参数（`resolveCompatibleModelSettings`/`chat.params` hook 在 tui.js 中均为 0 处）
 - 脚本自动适配当前版本（从 opencode.jsonc 提取），无需手动修改版本号
-- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`、`index.js.opencode-cache.4.16.1.original`、`index.js.opencode-cache.4.16.3.original`），不同版本的备份互不覆盖
-- PR #5672 截至 2026-07-11 仍未合入（源码 L75-79 仍缺字段）；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）
+- 备份文件名含版本号（如 `index.js.opencode-cache.4.15.1.original`、`index.js.opencode-cache.4.16.0.original`、`index.js.opencode-cache.4.16.1.original`、`index.js.opencode-cache.4.16.3.original`、`index.js.opencode-cache.4.17.1.original`），不同版本的备份互不覆盖
+- PR #5672 截至 2026-07-13 仍未合入（源码 L75-79 仍缺字段，git log 无相关 fix 提交）；合入后本 patch 可移除（脚本 `--check` 会自动检测官方修复并跳过）

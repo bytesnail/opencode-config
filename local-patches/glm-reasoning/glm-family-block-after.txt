@@ -4,10 +4,24 @@ Location (4.15.1): GLM object L21421-L21431 (block grows +6 lines vs unpatched)
 Location (4.16.0): GLM object L21461-L21471 (block grows +6 lines vs unpatched)
 Location (4.16.1): GLM object L21467-L21477 (block grows +6 lines vs unpatched)
 Location (4.16.3): GLM object L21487-L21497 (block grows +6 lines vs unpatched)
+Location (4.17.1): GLM object L21498-L21508 (block grows +6 lines vs unpatched)
 Patch delta: variants gains "max"; adds reasoningEfforts + reasoningEffortAliases
              (mirrors the existing DeepSeek family definition).
 
---- 4.16.3 patched (current) ---
+--- 4.17.1 patched (current) ---
+L21498:   {
+L21499:     family: "glm",
+L21500:     includes: ["glm"],
+L21501:     variants: ["low", "medium", "high", "max"],
+L21502:     reasoningEfforts: ["high", "max"],
+L21503:     reasoningEffortAliases: {
+L21504:       low: "high",
+L21505:       medium: "high",
+L21506:       xhigh: "max",
+L21507:     },
+L21508:   },
+
+--- 4.16.3 patched (kept for history) ---
 L21487:   {
 L21488:     family: "glm",
 L21489:     includes: ["glm"],

@@ -4,12 +4,27 @@ Location (4.15.1): GLM object L21421-L21425, surrounding context L21420-L21431
 Location (4.16.0): GLM object L21461-L21465, surrounding context L21460-L21471
 Location (4.16.1): GLM object L21467-L21471, surrounding context L21466-L21477
 Location (4.16.3): GLM object L21487-L21491, surrounding context L21486-L21497
+Location (4.17.1): GLM object L21498-L21502, surrounding context L21497-L21508
 Note: block content is byte-identical across all versions; only line numbers
-      shifted (4.15.1→4.16.0: +40; 4.16.0→4.16.1: +6; 4.16.1→4.16.3: +20) due to upstream
+      shifted (4.15.1→4.16.0: +40; 4.16.0→4.16.1: +6; 4.16.1→4.16.3: +20; 4.16.3→4.17.1: +11) due to upstream
       additions before this block. The patch script matches by CONTENT, not
       line number, so the shift is informational only.
 
---- 4.16.3 context (current, UNPATCHED) ---
+--- 4.17.1 context (current, UNPATCHED) ---
+L21497:   },
+L21498:   {
+L21499:     family: "glm",
+L21500:     includes: ["glm"],
+L21501:     variants: ["low", "medium", "high"]
+L21502:   },
+L21503:   {
+L21504:     family: "minimax",
+L21505:     includes: ["minimax"],
+L21506:     variants: ["low", "medium", "high"],
+L21507:     supportsThinking: false
+L21508:   },
+
+--- 4.16.3 context (kept for history) ---
 L21486:   },
 L21487:   {
 L21488:     family: "glm",
