@@ -2,7 +2,7 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": "notify",
   "plugin": [
-    "oh-my-openagent@4.17.1"
+    "oh-my-openagent@4.18.1"
   ],
   "disabled_providers": [
     "opencode",
