@@ -4,6 +4,11 @@
   "telemetry": false,
   "experimental": {},
   "hashline_edit": true,
+  "sisyphus_agent": {
+    "default_builder_enabled": true,
+    "planner_enabled": true,
+    "replace_plan": false
+  },
   "git_master": {
     "git_env_prefix": "GIT_MASTER=1",
     "commit_footer": true,
